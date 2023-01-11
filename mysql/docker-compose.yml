@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+  mysqldb:
+    container_name: my-mysql
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      - MYSQL_USER=my_root
+      - MYSQL_PASSWORD=my_pass
+      - MYSQL_ROOT_PASSWORD=my_pass
+    expose:
+      - 3306
+    ports:
+      - 3306:3306
+
+  management_mysql:
+    image: phpmyadmin/phpmyadmin
+    container_name: my-management-mysql
+    environment:
+      PMA_HOST: mysqldb
+    links:
+      - mysqldb:database
+    ports:
+      - '8081:80'
